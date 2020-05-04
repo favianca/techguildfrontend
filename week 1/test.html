@@ -1,0 +1,63 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promis Exercise</title>
+</head>
+<body>
+  <table>
+    <thead>
+      <tr>
+        <td>Book ID</td>
+        <td>Author</td>
+        <td>Title</td>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</body>
+<script>
+  const baseUrl = 'https://5ea905f90ebc1d001649053a.mockapi.io';
+  window.addEventListener('load', async () => {
+    const authors = await fetchAuthors();
+    const data = await fetchAllBooks(authors);
+    const books = data.reduce((acc, curr) => {
+      return [...acc, ...curr]
+    }, []);
+    const lookup = {};
+    const tbody = document.querySelector('tbody');
+    authors.forEach((i) => {
+      lookup[i.id] = i.name;
+    })
+    books.forEach((i) => {
+      insertRow(tbody, i.id, lookup[i.authorId], i.name)
+    })
+  })
+  function fetchAuthors () {
+    return fetch(`${baseUrl}/authors`)
+      .then((res) => res.json())
+  }
+  function fetchAllBooks (authors) {
+    const requests = authors.map((i) => (fetch(`${baseUrl}/authors/${i.id}/books`)));
+    return Promise.all(requests)
+      .then((res) => {
+        const responses = res.map((i) => i.json());
+        return Promise.all(responses)
+      })
+  }
+  function insertRow (parent, bookId, author, title) {
+    const bookCol = document.createElement('td')
+    bookCol.appendChild(document.createTextNode(bookId));
+    const authorCol = document.createElement('td')
+    authorCol.appendChild(document.createTextNode(author));
+    const titleCol = document.createElement('td')
+    titleCol.appendChild(document.createTextNode(title));
+    const row = document.createElement('tr');
+    row.appendChild(bookCol);
+    row.appendChild(authorCol);
+    row.appendChild(titleCol);
+    parent.appendChild(row);
+  }
+</script>
+</html>
