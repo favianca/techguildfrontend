@@ -1,0 +1,34 @@
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.main-wrapper > .login-wrapper {
+  background-color: grey;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 25px;
+}
+
+.main-wrapper > .login-wrapper > h2 {
+  font-weight: normal;
+  text-align: center;
+}
+
+.main-wrapper > .login-wrapper > form {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-wrapper > .login-wrapper > form > * {
+  margin-bottom: 10px;
+}
+
+.main-wrapper > .login-wrapper > form > .form-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
